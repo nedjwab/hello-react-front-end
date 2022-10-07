@@ -1,27 +1,21 @@
-import axios from 'axios';
-
 const GET_GREETINGS = 'Hello-react-frontend/GET_GREETINGS';
-const url = 'http://127.0.0.1:3000/api/v1/greetings';
+const url = 'http://localhost:3001/api/v1/greetings';
 
 export const getGreetings = (payload) => ({
   type: GET_GREETINGS,
   payload,
 });
 
+const head = {
+  method: 'GET',
+  mode: 'no-cors',
+  cache: 'no-cache',
+};
+
 export const fetchGreeting = () => async (dispatch) => {
-  const response = await axios.get(url);
-  const data = await response.data;
-  const greetings = [];
-  try {
-    data.forEach((el) => {
-        greetings.push({
-        message:el.message
-      });
-    });
-    dispatch(getGreetings(greetings));
-  } catch (error) {
-    <h2>{error}</h2>;
-  }
+  const response = await fetch(url, head);
+  const data = await response.json();
+  dispatch(getGreetings(data));
 };
 
 export default function greetingReducer(state = [], action) {
